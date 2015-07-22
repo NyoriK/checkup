@@ -1,0 +1,2 @@
+# checkup
+Check django server
