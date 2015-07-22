@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Title</title>
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/custom.css">
+{#        video player#}
+        <link href="{{ STATIC_URL }}css/video-js.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        
+        <div id="navbar_header">
+            <ul class="nav_links">
+                <li class="nav" id="settings-nav">
+                    <a href="/upload_video/">
+                        <button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-menu-hamburger"></span>
+                        </button>
+                    </a>
+                </li>
+                <li class="nav" id="home-nav">
+                    <a href="/">
+                        <button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-home"></span>
+                        </button>
+                    </a>
+                </li>
+                <li class="nav" id="user-nav">
+                    <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-user"></span>
+                    </button>
+                </li>
+                <span class="clear_both"></span>
+            </ul>
+        </div>
+        
+        <div id="main_content">
+            {% block content %}}
+                <p>Something here...</p>
+            {%  endblock %}
+        </div>
+        
+        <div id="navbar_footer">
+            <ul class="nav_links">
+                <li class="nav" id="search-nav">
+                    <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </li>
+                <li class="nav" id="thumbnail-nav">
+                    <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-th-large"></span>
+                    </button>
+                </li>
+                <li class="nav" id="list-nav">
+                    <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-th-list"></span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js" ></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/custom.js"></script>
+
+<!--        video player-->
+        <script src="{{ STATIC_URL }}js/video.js"></script>
+        <script>
+            videojs.options.flash.swf = "{{ STATIC_URL }}flash/video-js.swf";
+        </script>
+    </body>
+</html>
