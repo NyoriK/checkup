@@ -194,6 +194,11 @@ body {
     padding: 10px;
 }
 
+#player {
+    width: 680px;
+    margin: 0 auto;
+}
+
 #video-description {
     background: white;
     width: 740px;
