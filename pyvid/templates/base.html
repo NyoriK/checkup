@@ -4,8 +4,10 @@
         <title>Title</title>
         <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css">
         <link rel="stylesheet" href="{{ STATIC_URL }}css/custom.css">
-{#        video player#}
-        <link href="{{ STATIC_URL }}css/video-js.css" rel="stylesheet" type="text/css">
+
+        <link href="//vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/projekktor.style.css">
+
     </head>
     <body>
         
@@ -65,9 +67,20 @@
         <script type="text/javascript" src="{{ STATIC_URL }}js/custom.js"></script>
 
 <!--        video player-->
-        <script src="{{ STATIC_URL }}js/video.js"></script>
+        <script src="//vjs.zencdn.net/4.12/video.js"></script>
         <script>
             videojs.options.flash.swf = "{{ STATIC_URL }}flash/video-js.swf";
         </script>
+
+        <script type="text/javascript" src="{{ STATIC_URL }}js/projekktor-1.3.09.min.js"></script>
+        <script type="text/javascript">
+        $(document).ready(function() {
+            projekktor('#player_a', {
+            volume: 0.8,
+            playerFlashMP4: '{{ STATIC_URL }}flash/StrobeMediaPlayback.swf',
+            playerFlashMP3: '{{ STATIC_URL }}flash/StrobeMediaPlayback.swf'
+            });
+        });
+        </script>         
     </body>
 </html>

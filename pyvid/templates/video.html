@@ -14,9 +14,42 @@
                     </video>
                 </div>
                 <div id="video-description">
-                    <p class="video-title">This is the title of the video</p>
-                    <p class="video-uploader">Kakar Nyori</p>
-                    <p class="video-pubdate">17/20/22</p>
+                    <p class="video-title">{{video.title}}</p>
+                    <p class="video-uploader">Username</p>
+                    <p class="video-pubdate">{{video.pubdate}}</p>
+                </div>
+
+
+                <br>
+                <hr>
+                <h2>Projekktor</h2>
+                <div id="player">
+                    <video id="player_a" class="projekktor" poster="intro.png" title="this is projekktor" width="640" height="360" controls>
+                        <source src="{{ MEDIA_URL }}{{ video.original_video }}" type="video/mp4" />
+                    </video>                
+                </div>
+
+                <br>
+                <hr>
+                <div id="player">                    
+                  <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264"
+                      poster="http://video-js.zencoder.com/oceans-clip.png"
+                      data-setup="{}">
+                    <source src="https://s3-ap-southeast-1.amazonaws.com/django-video-application/uploaded_videos/stackoverflow-output.mp4" type='video/mp4' />
+                    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+                  </video>                
+                </div>
+
+                <br>
+                <hr>
+                <h2>Original video /video/69/</h2>
+                <div id="player">                    
+                  <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264"
+                      poster="http://video-js.zencoder.com/oceans-clip.png"
+                      data-setup="{}">
+                    <source src="https://s3-ap-southeast-1.amazonaws.com/django-video-application/uploaded_videos/1437688173_36_20150724_030840%5B1%5D.mp4" type='video/mp4' />
+                    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+                  </video>                
                 </div>
             </div>
 
