@@ -17,8 +17,8 @@ def upload_video(request):
         form = VideoForm(request.POST, request.FILES)
         if form.is_valid():
             video = form.save(commit=False)
+	    video.converted = True
             video.save()
-            convert_video.delay(video.id)
             return HttpResponseRedirect('/')
     else:
         form = VideoForm()
