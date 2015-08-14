@@ -88,7 +88,11 @@ TEMPLATE_DIRS = (
     )
 
 if DEBUG:
+    # if local machine
     MEDIA_URL = '/media/'
+
+    # for s3
+    # MEDIA_URL = 'https://s3.amazonaws.com/dj-vid/'
     STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "pyvid", "static", "static-only")
     MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "pyvid", "static", "media")
     STATICFILES_DIRS = (
@@ -97,3 +101,9 @@ if DEBUG:
 
 
 BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
+# AWS_ACCESS_KEY_ID = os.environ.get('Access_Key_ID', '')
+# AWS_SECRET_ACCESS_KEY = os.environ.get('Secret_Access_Key', '')
+# AWS_STORAGE_BUCKET_NAME = 'dj-vid'

@@ -13,7 +13,13 @@ class Video(models.Model):
     pubdate = models.DateTimeField(default=timezone.now)
     original_video = models.FileField(upload_to=get_upload_file_name)
     mp4_720 = models.FileField(upload_to=get_upload_file_name,blank=True, null=True)
+    mp4_480 = models.FileField(upload_to=get_upload_file_name,blank=True, null=True)
+    # webm_720 = models.FileField(upload_to=get_upload_file_name,blank=True, null=True)
+    # webm_480 = models.FileField(upload_to=get_upload_file_name,blank=True, null=True)
+    # converted = models.PositiveSmallIntegerField(default=0)
+    time_taken = models.TextField()
     converted = models.BooleanField(default=False)
+
 
     class Meta:
         ordering = ['-pubdate']
