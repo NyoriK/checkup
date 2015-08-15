@@ -13,7 +13,7 @@
                             {% if vid.converted %}
                                 <div class="video-wrapper col-lg-2 col-md-4 col-sm-2">
                                     <div class="video-thumbnail">
-                                        <img src="{{ STATIC_URL }}img/img.jpg">
+                                        <img src="{{ MEDIA_URL}}{{vid.poster}}">
                                         <a href="/video/{{ vid.pk }}/"> <span class="glyphicon glyphicon-play video-play"></span> </a>
                                         <span class="glyphicon glyphicon-info-sign video-info"></span>
                                     </div>

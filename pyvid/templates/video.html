@@ -4,13 +4,18 @@
 
             <div class="container">
                 <div id="player">
-                    <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264"
-                      poster="http://video-js.zencoder.com/oceans-clip.png"
-                      data-setup="{}">
-                        <source src="{{ MEDIA_URL }}{{ video.original_video }}" type='video/mp4' />
-                        <track kind="captions" src="demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->
-                        <track kind="subtitles" src="demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->
-                        <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+                    <video width="640" height="360" id="player1" poster="{{ MEDIA_URL}}{{video.poster}}" controls="controls" preload="none">
+                        <!-- MP4 source must come first for iOS -->
+                        <source src="{{ MEDIA_URL}}{{video.mp4_480}}" type="video/mp4" title="480p">
+                        <source src="{{ MEDIA_URL}}{{video.mp4_720}}" type="video/mp4" title="720p">
+                        
+                        <!-- Fallback flash player for no-HTML5 browsers with JavaScript turned off -->
+                        <object width="640" height="360" type="application/x-shockwave-flash" data="{{ STATIC_URL }}mediaelement/flashmediaelement.swf">        
+                            <param name="movie" value="{{ STATIC_URL }}mediaelement/flashmediaelement.swf" /> 
+                            <param name="flashvars" value="controls=true&amp;file={{ STATIC_URL }}media/echo-hereweare.mp4" />      
+                            <!-- Image fall back for non-HTML5 browser with JavaScript turned off and no Flash player installed -->
+                            <img src="{{ MEDIA_URL}}{{video.poster}}" width="640" height="360" alt="{{video.title}}" title="No video playback capabilities" />
+                        </object>   
                     </video>
                 </div>
                 <div id="video-description">

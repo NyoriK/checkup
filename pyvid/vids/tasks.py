@@ -46,9 +46,10 @@ def convert_video(video_id):
     # # video_path = video.original_video.url
     # # or
     # video_path = str(MEDIA_URL) + str (video.original_video)
-
-    convert_video_name_720 = '720-'+str(get_upload_file_name(video))+'.mp4'
-    convert_video_name_480 = '480-'+str(get_upload_file_name(video))+'.mp4'
+    name = str(get_upload_file_name(video))
+    convert_video_name_720 = '720-'+ name +'.mp4'
+    convert_video_name_480 = '480-'+ name +'.mp4'
+    poster_name = name+'.jpg'
 
     # 720 scale
     # cmd = 'ffmpeg -i %s -codec:v libx264 -profile:v baseline -preset slow -b:v 250k -maxrate 250k -bufsize 500k -vf scale="trunc(oh*a/2)*2:720" -threads 0 -codec:a libfdk_aac -movflags +faststart %s' % (video_path, convert_video_name)
@@ -57,8 +58,9 @@ def convert_video(video_id):
     cmd = """
         ffmpeg -i %s \
             -codec:v libx264 -tune zerolatency -profile:v main -preset faster -crf 23 -maxrate 1000k -bufsize 10000k -vf scale="trunc(oh*a/2)*2:720" -codec:a libfdk_aac -pix_fmt yuv420p -movflags +faststart -threads 0 %s \
-            -codec:v libx264 -tune zerolatency -profile:v main -preset faster -crf 23 -maxrate 400k -bufsize 4000k -vf scale="trunc(oh*a/2)*2:480" -codec:a libfdk_aac -pix_fmt yuv420p -movflags +faststart -threads 0 %s
-        """ % (video_path, convert_video_name_720, convert_video_name_480)
+            -codec:v libx264 -tune zerolatency -profile:v main -preset faster -crf 23 -maxrate 400k -bufsize 4000k -vf scale="trunc(oh*a/2)*2:480" -codec:a libfdk_aac -pix_fmt yuv420p -movflags +faststart -threads 0 %s && \
+        ffmpeg -i %s -ss 00:00:01.000 -vframes 1 %s
+        """ % (video_path, convert_video_name_720, convert_video_name_480, video_path, poster_name)
     start_time = time()
     proc = Popen(
         cmd,
@@ -71,15 +73,19 @@ def convert_video(video_id):
         time_taken = timer(start_time, end_time)
         fp_720 = open(convert_video_name_720)
         fp_480 = open(convert_video_name_480)
+        fp_poster = open(poster_name)
         myfile_720 = File(fp_720)
         myfile_480 = File(fp_480)
+        myfile_poster = File(fp_poster)
         video.mp4_720.save(name=convert_video_name_720, content=myfile_720)
         video.mp4_480.save(name=convert_video_name_480, content=myfile_480)
+        video.poster.save(name=poster_name, content=myfile_poster)
         video.time_taken = time_taken
         video.converted = True
         video.save()
         os.remove(convert_video_name_720)
         os.remove(convert_video_name_480)
+        os.remove(poster_name)
     else:
         # Do something / Inform user in notification
         pass
@@ -106,14 +112,6 @@ def convert_video(video_id):
 #     convert_video_name_720 = '720-'+str(get_upload_file_name(video))+'.mp4'
 #     convert_video_name_480 = '480-'+str(get_upload_file_name(video))+'.mp4'
 
-#     # No pass encoding
-#     # cmd = """
-#     #     ffmpeg -i %s \
-#     #         -codec:v libx264 -tune zerolatency -profile:v main -preset faster -crf 23 -maxrate 1000k -bufsize 10000k -s hd720 -codec:a libfdk_aac -pix_fmt yuv420p -movflags +faststart -threads 0 %s \
-#     #         -codec:v libx264 -tune zerolatency -profile:v main -preset faster -crf 23 -maxrate 500k -bufsize 5000k -s hd480 -codec:a libfdk_aac -pix_fmt yuv420p -movflags +faststart -threads 0 %s
-#     #     """ % (video_path, convert_video_name_720, convert_video_name_480)
-
-#     # two pass encoding
 #     cmd = """
 #             ffmpeg -i %s \
 #                 -codec:v libx264 -tune zerolatency -profile:v main -preset superfast -b:v 1000k -maxrate 1000k -bufsize 10000k -vf scale="trunc(oh*a/2)*2:720" -threads 0 -pix_fmt yuv420p  -movflags +faststart -pass 1 -passlogfile %s -an -f mp4 -y /dev/null \
