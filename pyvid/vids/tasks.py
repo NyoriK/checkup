@@ -18,7 +18,7 @@ def timer(start_time,end_time):
     minutes, seconds = divmod(rem, 60)
     return ("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))    
 
-from pyvid.settings import MEDIA_URL
+from pyvid.settings import s3_MEDIA_URL
 
 from django.core.files import File
 
@@ -37,7 +37,7 @@ def convert_video(video_id):
     # video_path = str(MEDIA_ROOT)+'/'+str(video.original_video)
 
     # For s3
-    video_path = str(MEDIA_URL) + str (video.original_video)
+    video_path = str(s3_MEDIA_URL) + str (video.original_video)
     name = str(get_upload_file_name(video))
     convert_video_name_720 = '720-'+ name +'.mp4'
     convert_video_name_480 = '480-'+ name +'.mp4'
@@ -94,7 +94,7 @@ def convert_video(video_id):
 #     # # For s3
 #     # # video_path = video.original_video.url
 #     # # or
-#     # video_path = str(MEDIA_URL) + str (video.original_video)
+#     # video_path = str(s3_MEDIA_URL) + str (video.original_video)
 #     unique_pass_id_720 = str(get_upload_file_name(video))+'720'
 #     unique_pass_id_480 = str(get_upload_file_name(video))+'480'
 #     convert_video_name_720 = '720-'+str(get_upload_file_name(video))+'.mp4'
