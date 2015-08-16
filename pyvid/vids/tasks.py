@@ -4,7 +4,6 @@ logger = logging.getLogger(__name__)
 from pyvid.celery import app
 
 from time import time
-# import ntpath
 
 from models import Video
 
@@ -12,19 +11,14 @@ import re
 
 def get_upload_file_name(video):
     original_name = video.title
-    # original_name = ntpath.basename(original_name)
     return "%s_%s" % (str(time()).replace('.', '_'), re.sub(r'[^a-zA-Z0-9_-]', '',original_name))
-
-# def get_upload_file_name(video):
-#     name = video.title
-#     return name
 
 def timer(start_time,end_time):
     hours, rem = divmod(end_time-start_time, 3600)
     minutes, seconds = divmod(rem, 60)
     return ("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))    
 
-from pyvid.settings import MEDIA_ROOT, MEDIA_URL
+from pyvid.settings import MEDIA_URL
 
 from django.core.files import File
 
@@ -40,25 +34,19 @@ def convert_video(video_id):
     video = Video.objects.get(id=video_id)
 
     # If on same machine
-    video_path = str(MEDIA_ROOT)+'/'+str(video.original_video)
+    # video_path = str(MEDIA_ROOT)+'/'+str(video.original_video)
 
-    # # For s3
-    # # video_path = video.original_video.url
-    # # or
-    # video_path = str(MEDIA_URL) + str (video.original_video)
+    # For s3
+    video_path = str(MEDIA_URL) + str (video.original_video)
     name = str(get_upload_file_name(video))
     convert_video_name_720 = '720-'+ name +'.mp4'
     convert_video_name_480 = '480-'+ name +'.mp4'
     poster_name = name+'.jpg'
 
-    # 720 scale
-    # cmd = 'ffmpeg -i %s -codec:v libx264 -profile:v baseline -preset slow -b:v 250k -maxrate 250k -bufsize 500k -vf scale="trunc(oh*a/2)*2:720" -threads 0 -codec:a libfdk_aac -movflags +faststart %s' % (video_path, convert_video_name)
-    # with -s hd720 flag
-    # cmd = 'ffmpeg -i %s -codec:v libx264 -tune zerolatency -profile:v baseline -level 3.0 -preset medium -crf 23 -maxrate 400k -bufsize 1835k -s hd720 format=yuv420p -threads 0 -codec:a libfdk_aac -movflags +faststart %s' % (video_path, convert_video_name)
     cmd = """
         ffmpeg -i %s \
-            -codec:v libx264 -tune zerolatency -profile:v main -preset faster -crf 23 -maxrate 1000k -bufsize 10000k -vf scale="trunc(oh*a/2)*2:720" -codec:a libfdk_aac -pix_fmt yuv420p -movflags +faststart -threads 0 %s \
-            -codec:v libx264 -tune zerolatency -profile:v main -preset faster -crf 23 -maxrate 400k -bufsize 4000k -vf scale="trunc(oh*a/2)*2:480" -codec:a libfdk_aac -pix_fmt yuv420p -movflags +faststart -threads 0 %s && \
+            -codec:v libx264 -tune zerolatency -profile:v main -preset veryfast -crf 23 -maxrate 1000k -bufsize 10000k -vf scale="trunc(oh*a/2)*2:720" -codec:a libfdk_aac -pix_fmt yuv420p -movflags +faststart -threads 0 %s \
+            -codec:v libx264 -tune zerolatency -profile:v main -preset veryfast -crf 23 -maxrate 480k -bufsize 4800k -vf scale="trunc(oh*a/2)*2:480" -codec:a libfdk_aac -pix_fmt yuv420p -movflags +faststart -threads 0 %s && \
         ffmpeg -i %s -ss 00:00:01.000 -vframes 1 %s
         """ % (video_path, convert_video_name_720, convert_video_name_480, video_path, poster_name)
     start_time = time()
