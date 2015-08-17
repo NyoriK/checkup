@@ -92,9 +92,13 @@ if DEBUG:
     # # if local machine
     # MEDIA_URL = '/media/'
 
-    # for s3
-    s3_MEDIA_URL = 'https://s3.amazonaws.com/dj-vid/'
-    MEDIA_URL = 'http://d1mdjpo1p7esjl.cloudfront.net/'
+    # for aws cloudfront
+    # MEDIA_URL = 'http://d1mdjpo1p7esjl.cloudfront.net/'
+    # for aws s3
+    # s3_MEDIA_URL = 'https://s3.amazonaws.com/dj-vid/'
+
+    # only through aws s3
+    MEDIA_URL = 'https://s3-ap-southeast-1.amazonaws.com/vuvu-dj/'
 
     STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "pyvid", "static", "static-only")
     # MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "pyvid", "static", "media")
