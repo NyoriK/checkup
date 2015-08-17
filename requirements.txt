@@ -6,6 +6,7 @@ boto==2.38.0
 celery==3.1.18
 Django==1.8.3
 django-storages==1.1.8
+gunicorn==19.3.0
 kombu==3.0.26
 pymediainfo==1.4.0
 python-magic==0.4.6
